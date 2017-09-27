@@ -7,7 +7,7 @@ A simple POC..This is just a sample app and Rest api is being mocked.
 ##### Prerequisites
 
 First, install [Polymer CLI](https://github.com/Polymer/polymer-cli) using
-[npm](https://www.npmjs.com) (we assume you have pre-installed [node.js](https://nodejs.org)).
+[npm](https://www.npmjs.com) (You need to install [node.js](https://nodejs.org) before installing npm).
 
     npm install -g polymer-cli
 
