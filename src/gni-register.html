@@ -65,8 +65,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <product-data products="{{products}}" ></product-data>
 
-    <div class="flex-container">
 
+    <div class="flex-container">
       <card-item primary-item>
           <span slot="title">Register</sapn>
           <div slot="description">
@@ -136,25 +136,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       connectedCallback() {
         super.connectedCallback();
+        var regform = this.$.regform;
 
-        var self = this;
-
-        this.$.regform.allowRedirect = false;
-
-        this.$.regform.addEventListener('iron-form-response', function() {
-          console.log(arguments);
-        });
-        this.$.regform.addEventListener('iron-form-presubmit', function(event) {
-
-          // event.detail.productId = self.formData.productId;
-          // console.log(this);
-          this.request.body['productId'] = self.formData.productId;
-
-          // event.preventDefault();
-
-          
-
-        });
+        regform.allowRedirect = false;
+        regform.addEventListener('iron-form-response', (e)=>this._registerSuccess(e));
+        regform.addEventListener('iron-form-error', (e)=>this._registerFailed(e));
+        regform.addEventListener('iron-form-presubmit', (e)=>this._modifyData(e));
       }
 
       static get observers() { return [
@@ -165,13 +152,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set('formData.productId', id);
       }
 
-     /* _registerSuccess() {
+      _modifyData(){
+          this.$.regform.request.body['productId'] = this.formData.productId;
+
+          // event.detail.productId = self.formData.productId;
+          // console.log(this);
+          // event.preventDefault();
+        }
+      _registerSuccess() {
         console.log("Registration Success");
+
+        window.history.pushState({}, null, '/gni-register-success');
+        window.dispatchEvent(new CustomEvent('location-changed'));
+
+        // this.set('route.path', './gni-register-success');
       }
 
       _registerFailed() {
+        // this.$.notification.open();
         console.log("Registration Failed!");
-      }*/
+
+        this.dispatchEvent(new CustomEvent('show-error-toast', {
+          bubbles: true, composed: true, detail: {
+            text: 'Registration Failed!'
+          }}));
+      }
 
       _formSubmit(){
         this.$.regform.submit();
