@@ -1,0 +1,27 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-validator-behavior/iron-validator-behavior.html">
+
+<dom-module id="file-validator">
+  <script>
+    class FileValidator extends Polymer.mixinBehaviors([Polymer.IronValidatorBehavior], Polymer.Element) {
+      static get is() { return 'file-validator'; }
+
+      ready() {
+        super.ready();
+
+        console.log('init');
+        // Workaround https://github.com/PolymerElements/iron-validator-behavior/issues/30#issuecomment-305643574
+        // new Polymer.IronMeta({type: 'validator', key: FileValidator.is, value: this});
+      }
+
+      validate(value) {
+        console.log(value);
+        // const re = /^\d{3}-?\d{2}-?\d{4}$/;
+        // return re.test(value);
+        return true;
+      }
+    }
+
+    window.customElements.define(FileValidator.is, FileValidator);
+  </script>
+</dom-module>
